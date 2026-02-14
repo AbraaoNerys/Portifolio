@@ -2,6 +2,8 @@ import Image from "next/image";
 import type { Project } from "@/data/projects";
 
 export default function ProjectCard({ project }: { project: Project }) {
+  const imgSrc = project.image?.trim(); 
+
   return (
     <article
       className="
@@ -13,25 +15,27 @@ export default function ProjectCard({ project }: { project: Project }) {
         hover:shadow-xl hover:-translate-y-1 hover:border-blue-400/30
       "
     >
-      
       <div className="relative h-60 overflow-hidden">
-        <Image
-          src={project.image}
-          alt={project.title}
-          fill
-          className="
-            object-cover
-            scale-[1.02]
-            transition duration-500
-            group-hover:scale-[1.08]
-          "
-          sizes="(max-width: 768px) 100vw, 33vw"
-        />
+        {imgSrc ? (
+          <Image
+            src={imgSrc}
+            alt={project.title}
+            fill
+            className="
+              object-cover
+              scale-[1.02]
+              transition duration-500
+              group-hover:scale-[1.08]
+            "
+            sizes="(max-width: 768px) 100vw, 33vw"
+          />
+        ) : (
+          // fallback visual (opcional, mas fica bonito e evita espaço “vazio”)
+          <div className="absolute inset-0 bg-slate-950/60" />
+        )}
 
-        
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent" />
 
-        
         <div
           className="
             pointer-events-none absolute -left-1/2 top-0 h-full w-1/2
@@ -41,7 +45,6 @@ export default function ProjectCard({ project }: { project: Project }) {
           "
         />
 
-        
         <div className="absolute top-4 left-4">
           <span className="inline-flex items-center gap-2 text-xs text-blue-200 border border-blue-500/20 bg-slate-950/50 px-3 py-1 rounded-full">
             <span className="h-2 w-2 rounded-full bg-blue-400" />
@@ -50,7 +53,6 @@ export default function ProjectCard({ project }: { project: Project }) {
         </div>
       </div>
 
-      
       <div className="p-6 flex flex-col min-h-[220px]">
         <h3 className="text-white font-semibold text-lg leading-snug line-clamp-2">
           {project.title}
@@ -60,7 +62,6 @@ export default function ProjectCard({ project }: { project: Project }) {
           {project.summary}
         </p>
 
-       
         <div className="mt-4 flex flex-wrap gap-2">
           {project.tech.slice(0, 6).map((t) => (
             <span
@@ -79,7 +80,6 @@ export default function ProjectCard({ project }: { project: Project }) {
           ))}
         </div>
 
-        
         <div className="mt-auto pt-5 flex items-center gap-3">
           <a
             href={project.hrefRepo}
@@ -113,12 +113,13 @@ export default function ProjectCard({ project }: { project: Project }) {
               Live →
             </a>
           ) : (
-            <span className="text-xs text-gray-400 select-none">Demo em breve</span>
+            <span className="text-xs text-gray-400 select-none">
+              Demo em breve
+            </span>
           )}
         </div>
       </div>
 
-      
       <div className="pointer-events-none absolute -inset-24 opacity-0 group-hover:opacity-100 transition duration-500">
         <div className="absolute inset-0 bg-blue-500/12 blur-3xl" />
       </div>
